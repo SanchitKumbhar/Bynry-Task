@@ -1,0 +1,11 @@
+Problems in the original API endpoint
+
+The product and inventory are saved using two separate database commits, which makes the operation non-atomic.
+
+If the inventory creation fails after the product is committed, the database ends up with a product record that has no corresponding inventory record.
+
+There is no rollback mechanism to undo database changes when an error occurs during the request.
+
+Creating a product and its inventory is a single business operation, but the code treats them as independent actions.
+
+Partial database writes can occur in production, leading to inconsistent and unreliable inventory data.
